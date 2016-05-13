@@ -1,0 +1,341 @@
+{% extends 'base.html'%}
+
+{% block body %}
+{% load staticfiles %}
+<div class="wrapper">
+	<div class="sidebar" data-background-color="white" data-active-color="danger">
+
+    <!--
+		Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+		Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+	-->
+
+    	<div class="sidebar-wrapper">
+            <div class="logo">
+                <img src="{% static 'img/Pointlogo.png' %}" alt="Logo Point" style="width:230px;height:120px;">
+            </div>
+
+            <ul class="nav">
+                <li>
+                    <a href="{% url 'home' %}">
+                        <i class="ti-panel"></i>
+                        <p>Panel Principal</p>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{% url 'user' %}">
+                        <i class="ti-user"></i>
+                        <p>Nuevo paciente</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'waitlist' %}">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Lista de espera</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'appointments' %}">
+                        <i class="ti-text"></i>
+                        <p>Toma de horas</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'calendar' %}">
+                        <i class="ti-calendar"></i>
+                        <p>Calendario</p>
+                    </a>
+                </li>
+                <li>
+            </ul>
+    	</div>
+    </div>
+
+    <div class="main-panel">
+		<nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Perfil del Paciente</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li class="dropdown">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <i class="ti-bell"></i>
+                                    <p class="notification">5</p>
+									<b class="caret"></b>
+                              </a>
+                              <ul class="dropdown-menu">
+                                <li><a href="#">Notificación 1</a></li>
+                                <li><a href="#">Notificación 2</a></li>
+                                <li><a href="#">Notificación 3</a></li>
+                                <li><a href="#">Notificación 4</a></li>
+                                <li><a href="#">Otra notificación</a></li>
+                              </ul>
+                        </li>
+						
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-5">
+                        <div class="card card-user">
+                            <div class="image">
+                                <img src="{% static 'img/background.jpg' %}" alt="..."/>
+                            </div>
+                            <div class="content">
+                                <div class="author">
+                                  <img class="avatar border-white" src="{% static 'img/faces/face-2.jpg' %}" alt="..."/>
+                                  <h4 class="title">Pedro el Barbudo<br />
+                                  </h4>
+                                </div>
+                                </br>
+                                <div class="btn-group">
+                                    <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Seleccionar notificación<span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+    
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">e-mail</a></li>
+                                        
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Sms</a></li>
+                                        
+                                        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Llamada telefónica</a></li>
+                                        
+                                        <li role="presentation" class="divider"></li>
+                                        
+            
+                                        </ul>
+                                </div>
+    
+                            </div>
+                            <hr>
+                            <div class="text-center">
+                                <div class="row">
+                                    
+                                    
+                                </div>
+                                <ul class="list-group">
+                                  <li class="list-group-item">
+                                    <span class="badge">5</span>
+                                    Ranking
+                                  </li>
+                                </ul>
+                                <ul class="list-group">
+                                  <li class="list-group-item">
+                                    <span class="badge">14</span>
+                                    Historial de consultas
+                                  </li>
+                                </ul>
+
+                                <div class="btn-group">
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Miembros de la familia</h4>
+                            </div>
+                            <div class="content">
+                                <ul class="list-unstyled team-members">
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <div class="avatar">
+                                                            <img src="{% static 'img/faces/face-0.jpg' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        Familiar 1
+                                                        <br />
+                                                     
+                                                    </div>
+
+                                                    <div class="col-xs-3 text-right">
+                                                        <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <div class="avatar">
+                                                            <img src="{% static 'img/faces/face-0.jpg' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        Familiar 2
+                                                        <br />
+                                                      
+                                                    </div>
+
+                                                    <div class="col-xs-3 text-right">
+                                                        <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <div class="avatar">
+                                                            <img src="{% static 'img/faces/face-0.jpg' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        Familiar 3
+                                                        <br />
+                                                    </div>
+
+                                                    <div class="col-xs-3 text-right">
+                                                        <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-7">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Ingresar nuevo paciente</h4>
+                            </div>
+                            <div class="content">
+                                <form action="{% url 'user' %}" method="POST">
+                                {% csrf_token %} 
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Nombre</label>
+                                                <input type="text" class="form-control border-input" placeholder="Ingresar nombre" name="nombre">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Apellido</label>
+                                                <input type="text" class="form-control border-input" placeholder="Ingresar apellido" name="apellido">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Fecha de nacimiento</label>
+                                                <input type="email" class="form-control border-input" placeholder="DD/MM/AA" name="fecha">
+                                            </div>
+                                        </div>
+                         
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Rut</label>
+                                                <input type="text" class="form-control border-input" placeholder="11111111-k" name="rut">
+                                            </div>
+                                        </div>
+
+                                        
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Dirección</label>
+                                                 <input type="email" class="form-control border-input" placeholder="Ingresar dirección">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Email</label>
+                                                <input type="email" class="form-control border-input" placeholder="paciente@point.cl">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Seguro</label>
+                                                <input type="email" class="form-control border-input" placeholder="Seguro médico">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Teléfono de contacto</label>
+                                                <input type="email" class="form-control border-input" placeholder="09-XXXXXXXX">
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Ficha médica</label>
+                                                <textarea rows="5" class="form-control border-input" placeholder="Here can be your description" value="Mike">Grupo Sanguíneo:
+Enfermedades Crónicas:
+Alergia a medicamentos:
+Operaciones realizadas:
+etc...</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-info btn-fill btn-wd">Guardar</button>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <nav class="pull-left">
+                    <ul>
+
+                        <li>
+                            <a href="http://www.creative-tim.com">
+                                Ayuda
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://blog.creative-tim.com">
+                               Contacto
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://www.creative-tim.com/license">
+                                Licencias
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+				<div class="copyright pull-right">
+                    &copy; <script>document.write(new Date().getFullYear())</script>,  by <a href="http://www.creative-tim.com">Point team</a>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+</div>
+{% endblock %}

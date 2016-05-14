@@ -1,97 +1,8 @@
 {% extends 'base.html'%}
-
-{% block body %}
+{% block encabezado %}Lista de espera{% endblock %}
+{% block content %}
 {% load staticfiles %}
 
-<div class="wrapper">
-    <div class="sidebar" data-background-color="white" data-active-color="danger">
-
-    <!--
-        Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
-        Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
-    -->
-
-        <div class="sidebar-wrapper">
-            <div class="logo">
-                <div class="logo">
-                <img src="{% static 'img/Pointlogo.png' %}" alt="Logo Point" style="width:230px;height:120px;">
-            </div>
-            </div>
-
-            <ul class="nav">
-                <li>
-                    <a href="{% url 'home' %}">
-                        <i class="ti-panel"></i>
-                        <p>Panel Principal</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'user' %}">
-                        <i class="ti-user"></i>
-                        <p>Nuevo paciente</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="{% url 'waitlist' %}">
-                        <i class="ti-view-list-alt"></i>
-                        <p>Lista de espera</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'appointments' %}">
-                        <i class="ti-text"></i>
-                        <p>Toma de horas</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'calendar' %}">
-                        <i class="ti-calendar"></i>
-                        <p>Calendario</p>
-                    </a>
-                </li>
-                <li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="main-panel">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar bar1"></span>
-                        <span class="icon-bar bar2"></span>
-                        <span class="icon-bar bar3"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Lista de espera</a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            </br>
-                            <div class="col-xs-20">
-                                <input type="text" value="" placeholder="Buscar paciente, doctor, etc." class="form-control" />
-                            </div>
-                        </li>
-                        <li class="dropdown">
-                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <i class="ti-bell"></i>
-                                    <p class="notificaciones">4</p>
-                                    <b class="caret"></b>
-                              </a>
-                              <ul class="dropdown-menu">
-                                <li><a href="#">Correo Doctor Ramírez</a></li>
-                                <li><a href="#">Hora cancelada</a></li>
-                                <li><a href="#">Recordatorio: llamar a Angélica</a></li>
-                                <li><a href="#">Hora cancelada</a></li>
-                              </ul>
-                        </li>
-                    </ul>
-
-                </div>
-            </div>
-        </nav>
 
         <div class="content">
             <div class="container-fluid">
@@ -111,8 +22,8 @@
                         <li><a href="{% url 'todas' %}"> Ver todas...</a></li>
                     </ul>
                 </div>
-                </br>
-                </br>
+                <br>
+                <br>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
@@ -175,7 +86,7 @@
                 </div>
             </div>
         </div>
-        </br>
+        <br>
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -240,7 +151,7 @@
                 </div>
             </div>
         </div>
-        </br>
+        <br>
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
@@ -305,16 +216,6 @@
                 </div>
             </div>
         </div>
-        <footer class="footer">
-            <div class="container-fluid">
-                <div class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">POINT Team</a>
-                </div>
-            </div>
-        </footer>
 
-
-    </div>
-</div>
 
 {% endblock %}

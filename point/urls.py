@@ -31,4 +31,8 @@ urlpatterns = [
     url(r'^urologia$', home_views.urologia, name='urologia'),
     url(r'^todas$', home_views.todas, name='todas'),
     # TERMINO URL LISTAS (BORRAR DESPUÉS)
+
+    # URLS API
+    url(r'^create_appointment/$', home_views.create_appointment, name='create_appointment'),
+    url(r'^enviar_recordatorios/$', home_views.enviar_recordatorios, name='enviar_recordatorios'),
 ]

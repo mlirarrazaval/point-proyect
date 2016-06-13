@@ -3,7 +3,10 @@
 {% block encabezado %}Calendario{% endblock %}
 {% block more_static %}
     {% load staticfiles %}
-    <link href="{% static 'css/fullcalendar.css' %}" rel="stylesheet">
+    <link href="{% static 'fullcalendar/fullcalendar.css' %}" rel="stylesheet">
+    <script src="{% static 'fullcalendar/lib/moment.min.js' %}"></script>
+    <script src="{% static 'fullcalendar/fullcalendar.min.js' %}"></script>
+    <script src="{% static 'fullcalendar/lang/es.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -13,219 +16,199 @@
 
 <div style="clear:both"></div>
 
+
+  <div class="row" style="width: 95%;margin: 0 auto;">
+    <div class="col-lg-8 col-md-7" style="width: 100%;padding: 0;">
+      <div class="card">
+        <div class="header">
+            <h4 class="title">Enviar recordatorios</h4>
+        </div>
+        <div class="content">
+          <p>Enviar recordatorio a todos aquellos pacientes que tienen una consulta en menos de 30 horas.</p>
+          <button type="button" class="btn btn-primary" onclick="enviar_recordatorios(this);">Enviar emails</button>
+        </div>
+      </div>
+      <div class="alert alert-info" role="alert" id="mensaje" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+        <p></p>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}
+
+{% block modals %}
+<div class="modal fade" tabindex="-1" role="dialog" id="create_appointment_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Agendar consulta</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="sel1">Seleccione un paciente:</label>
+          <select class="form-control border-input" id="paciente">
+            {% for paciente in pacientes_espera %}
+              <option value="{{paciente.id}}">{{paciente.nombre_completo}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sel1">Seleccione un doctor:</label>
+          <select class="form-control border-input" id="doctor">
+            {% for doctor in doctores %}
+              <option value="{{doctor.id}}">{{doctor.nombre_completo}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        Se creará una consulta en la hora seleccionada para este paciente.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="create_appointment();" data-dismiss="modal">Agendar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}
 
 {% block last_includes %}
     {% load staticfiles %}
-    <script src="{% static 'js/fullcalendar.js' %}"></script>
     <script>
 
         $(document).ready(function() {
-            var date = new Date();
-            var d = date.getDate();
-            var m = date.getMonth();
-            var y = date.getFullYear();
-
-        /*  className colors
-
-        className: default(transparent), important(red), chill(pink), success(green), info(blue)
-
-        */
-
-
-        /* initialize the external events
-        -----------------------------------------------------------------*/
-
-            $('#external-events div.external-event').each(function() {
-
-            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-            // it doesn't need to have a start or end
-                var eventObject = {
-                    title: $.trim($(this).text()) // use the element's text as the event title
-                };
-
-                // store the Event Object in the DOM element so we can get to it later
-                $(this).data('eventObject', eventObject);
-
-                // make the event draggable using jQuery UI
-                $(this).draggable({
-                    zIndex: 999,
-                    revert: true,      // will cause the event to go back to its
-                    revertDuration: 0  //  original position after the drag
-                });
-
-            });
-
-
-        /* initialize the calendar
-        -----------------------------------------------------------------*/
-
-            var calendar =  $('#calendar').fullCalendar({
+            var calendar = $('#calendar').fullCalendar({
                 header: {
                     left: 'title',
                     center: 'agendaDay,agendaWeek,month',
                     right: 'prev,next today'
                 },
-                editable: true,
-                firstDay: 1, //  1(Monday) this can be changed to 0(Sunday) for the USA system
-                selectable: true,
-                defaultView: 'month',
-
-                axisFormat: 'h:mm',
-                columnFormat: {
-                    month: 'ddd',    // Mon
-                    week: 'ddd d', // Mon 7
-                    day: 'dddd M/d',  // Monday 9/7
-                    agendaDay: 'dddd d'
-                },
                 titleFormat: {
-                    month: 'MMMM yyyy', // September 2009
-                    week: "MMMM yyyy", // September 2009
-                    day: 'MMMM yyyy'                  // Tuesday, Sep 8, 2009
+                    week: "MMMM YYYY"
                 },
-                allDaySlot: false,
+                firstDay: 1,
+                defaultView: 'agendaWeek',
+                axisFormat: 'H:mm',
+                minTime: '8:00',
+                maxTime: '22:00',
+                timezone: 'Chile/Continental',
+                selectable: true,
+                selectOverlap: false,
                 selectHelper: true,
-                select: function(start, end, allDay) {
-                    var title = prompt('Event Title:');
-                    if (title) {
-                        calendar.fullCalendar('renderEvent',
-                            {
-                                title: title,
-                                start: start,
-                                end: end,
-                                allDay: allDay
-                            },
-                            true // make the event "stick"
-                        );
-                    }
-                    calendar.fullCalendar('unselect');
+                allDaySlot: false,
+                // defaultAllDayEventDuration: { days:0, hours:1, minutes:0 },
+                select: function(start, end, jsEvent, view) {
+                  if (view.name=='month') {
+                    $('#calendar').fullCalendar('changeView', 'agendaWeek');
+                    $('#calendar').fullCalendar('gotoDate', start)
+                  }
+                  else {
+                    app_start = start;
+                    app_end = end;
+                    $('#create_appointment_modal').modal('show');
+                  }
                 },
-                droppable: true, // this allows things to be dropped onto the calendar !!!
-                drop: function(date, allDay) { // this function is called when something is dropped
-
-                    // retrieve the dropped element's stored Event Object
-                    var originalEventObject = $(this).data('eventObject');
-
-                    // we need to copy it, so that multiple events don't have a reference to the same object
-                    var copiedEventObject = $.extend({}, originalEventObject);
-
-                    // assign it the date that was reported
-                    copiedEventObject.start = date;
-                    copiedEventObject.allDay = allDay;
-
-                    // render the event on the calendar
-                    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-                    $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-
-                    // is the "remove after drop" checkbox checked?
-                    if ($('#drop-remove').is(':checked')) {
-                        // if so, remove the element from the "Draggable Events" list
-                        $(this).remove();
-                    }
-
-                },
-
                 events: [
+                  {% for event in consultas %}
                     {
-                        title: 'All Day Event',
-                        start: new Date(y, m, 1)
+                        id: {{event.id}},
+                        title: "{{ event.titulo }}",
+                        start: "{{ event.fecha|date:"Y-m-d\TH:i:s+00:00" }}",
+                        end: "{{ event.fecha_termino|date:"Y-m-d\TH:i:s+00:00" }}",
+                        className: "info",
                     },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: new Date(y, m, d-3, 16, 0),
-                        allDay: false,
-                        className: 'info'
-                    },
-                    {
-                        id: 999,
-                        title: 'Repeating Event',
-                        start: new Date(y, m, d+4, 16, 0),
-                        allDay: false,
-                        className: 'info'
-                    },
-                    {
-                        title: 'Meeting',
-                        start: new Date(y, m, d, 10, 30),
-                        allDay: false,
-                        className: 'important'
-                    },
-                    {
-                        title: 'Lunch',
-                        start: new Date(y, m, d, 12, 0),
-                        end: new Date(y, m, d, 14, 0),
-                        allDay: false,
-                        className: 'important'
-                    },
-                    {
-                        title: 'Birthday Party',
-                        start: new Date(y, m, d+1, 19, 0),
-                        end: new Date(y, m, d+1, 22, 30),
-                        allDay: false,
-                    },
-                    {
-                        title: 'Click for Google',
-                        start: new Date(y, m, 28),
-                        end: new Date(y, m, 29),
-                        url: 'http://google.com/',
-                        className: 'success'
-                    }
+                  {% endfor %}
                 ],
             });
-
-
         });
+
+
+function create_appointment(){
+  var duration = (app_end - app_start) / 60000;
+  var date = app_start.toDate().toUTCString();
+  var pacient = $('#paciente').val();
+  var doctor = $('#doctor').val();
+  $.ajax({
+    type: 'POST',
+    url: '/create_appointment/',
+    data: {'csrfmiddlewaretoken': $.cookie('csrftoken'), 'duration': String(duration), 'date': date, 'pacient': pacient, 'doctor': doctor},
+    dataType: 'json',
+    success: function(data){
+      if(data['error']){
+        console.log(data['error']);
+      }
+      else {
+        $('#calendar').fullCalendar('renderEvent',
+          {
+            id: data['id'],
+            title: data['title'],
+            start: app_start,
+            end: app_end,
+            description: data['description'],
+            className: 'info',
+          }, true);
+      }
+    },
+    error: function(data){
+      console.log('error 500');
+    },
+    complete: function(data){
+      console.log('complete');
+    }
+  });
+  return false
+}
+
+function enviar_recordatorios(btn){
+  var $btn = $(btn).button('loading');
+  $.ajax({
+    type: 'POST',
+    url: '/enviar_recordatorios/',
+    data: {'csrfmiddlewaretoken': $.cookie('csrftoken')},
+    dataType: 'json',
+    success: function(data){
+      if(data['error']){
+        $('#mensaje p').text(data['error']);
+        $('#mensaje').show();
+      }
+      else {
+        $('#mensaje p').text(data['info']);
+        $('#mensaje').show();
+      }
+    },
+    error: function(data){
+      console.log('error 500');
+    },
+    complete: function(data){
+      console.log('complete');
+      $btn.button('reset');
+    }
+  });
+}
+
 
 </script>
 <style>
-
-    #external-events {
-        float: left;
-        width: 150px;
-        padding: 0 10px;
-        text-align: left;
-        }
-
-    #external-events h4 {
-        font-size: 16px;
-        margin-top: 0;
-        padding-top: 1em;
-        }
-
-    .external-event { /* try to mimick the look of a real event */
-        margin: 10px 0;
-        padding: 2px 4px;
-        background: #3366CC;
-        color: #fff;
-        font-size: .85em;
-        cursor: pointer;
-        }
-
-    #external-events p {
-        margin: 1.5em 0;
-        font-size: 11px;
-        color: #666;
-        }
-
-    #external-events p input {
-        margin: 0;
-        vertical-align: middle;
-        }
-
-    #calendar {
-        margin: 0 auto;
-        margin-top: 20px;
-        width: 95%;
-        background-color: #FFFFFF;
-        border-radius: 6px;
-        box-shadow: 0 1px 2px #C3C3C3;
-        text-align: center;
-        font-size: 14px;
-        font-family: "Helvetica Nueue",Arial,Verdana,sans-serif;
-    }
-
+  #calendar {
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    width: 95%;
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    box-shadow: 0 1px 2px #C3C3C3;
+    text-align: center;
+    font-size: 14px;
+    font-family: "Helvetica Nueue",Arial,Verdana,sans-serif;
+  }
 </style>
-
+<link href="{% static 'css/calendar_mac.css' %}" rel="stylesheet">
 {% endblock %}
 
 

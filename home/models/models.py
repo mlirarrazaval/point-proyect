@@ -1,4 +1,7 @@
+from datetime import datetime, timedelta
 from django.db import models
+from .utils import mail_recordatorio
+
 
 SEGUROS = [('Fonasa', 'Fonasa')]
 VIAS = [('Mail', 'Mail'), ('Llamada', 'Llamada'), ('SMS', 'SMS')]
@@ -25,6 +28,10 @@ class Paciente(models.Model):
     def __str__(self):
         return self.nombres + ' ' + self.apellido_paterno
 
+    def nombre_completo(self):
+        return '%s %s %s' % (self.nombres, self.apellido_paterno,
+                             self.apellido_materno)
+
 
 class Doctor(models.Model):
     nombres = models.CharField(max_length=50)
@@ -33,9 +40,36 @@ class Doctor(models.Model):
     especialidad = models.CharField(max_length=50)
     horario_atencion = models.CharField(max_length=50)
 
+    def nombre_completo(self):
+        return '%s %s %s' % (self.nombres, self.apellido_paterno,
+                             self.apellido_materno)
+
+    def __str__(self):
+        return self.nombres + ' ' + self.apellido_paterno
+
 
 class Consulta(models.Model):
     paciente = models.ForeignKey(Paciente)
-    fecha_consulta = models.DateTimeField()
+    fecha = models.DateTimeField()
+    duracion = models.DurationField(default=timedelta(minutes=60))
     doctor = models.ForeignKey(Doctor)
     estado = models.CharField(choices=ESTADOS, max_length=20)
+
+    @property
+    def titulo(self):
+        return '%s - %s' % (self.paciente, self.doctor)
+
+    @property
+    def descripcion(self):
+        return self.paciente.mail
+
+    @property
+    def fecha_termino(self):
+        return self.fecha + self.duracion
+
+    def enviar_recordatorio(self):
+        return mail_recordatorio(self)
+
+    def __str__(self):
+        fecha = self.fecha.strftime('%d-%m-%y %H:%M')
+        return '%s %s con %s' % (self.paciente, fecha, self.doctor)

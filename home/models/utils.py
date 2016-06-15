@@ -3,12 +3,12 @@ import sendgrid
 
 
 def mail_recordatorio(consulta):
+    paciente = consulta.paciente
     try:
         sg_api_key = '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'
         sg = sendgrid.SendGridClient(sg_api_key)
         message = sendgrid.Mail()
 
-        paciente = consulta.paciente
         link = 'http://point.cl/'
         name = paciente.nombre_completo
 

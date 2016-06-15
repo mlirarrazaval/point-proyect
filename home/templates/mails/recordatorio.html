@@ -20,7 +20,7 @@
                         <tr style="border-radius: .2857rem .2857rem 0px 0px;">
 
                       <td bgcolor="#e7e7e7" align="center" style="padding: 10px 20px 0px 20px;border-radius: .2857rem .2857rem 0px 0px; border-bottom: solid 1px rgba(0, 0, 0, 0.1); box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);">
-                  <a href="{{link}}"><img src="https://docs.google.com/uc?id=0B4r8sWK6BwqXMHI1d1BZWmEwRTA" alt="Point Logo" height="70px"></a>
+                  <a href="{{link}}"><img src="https://docs.google.com/uc?id=0B4r8sWK6BwqXZDFYNGJyWTdOUkE" alt="Point Logo" height="70px"></a>
                                 </td>
 
                             </tr>
@@ -34,14 +34,19 @@
                               </td>
                           </tr>
                           <tr>
-                            <td style="font-family:Lato,Georgia,serif; font-size: 14px; color:#565656; padding:0px 30px 30px 70px;text-align:left;">
+                            <td style="font-family:Lato,Georgia,serif; font-size: 14px; color:#565656; padding:0px 30px 5px 70px;text-align:left;">
                               <p>Fecha: {{ consulta.fecha|date:"d-m-Y" }} a las {{ consulta.fecha|time:"H:i" }} hrs.</p>
                               <p>Doctor: {{ consulta.doctor.nombre_completo }}</p>
                             </td>
                           </tr>
                           <tr>
+                            <td style="padding:0px 30px 20px 30px;">
+                              <p style="font-size:1.2rem; color:rgba(0, 0, 0, .87); font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; margin-top:0px; margin-bottom:0px; text-indent:40px;text-align:justify;"> Por favor responde este mail confirmando o cancelando tu hora. Recuerda que al no asistir le quitas la oportunidad a otra persona.</p>
+                              </td>
+                          </tr>
+                          <tr>
                            <td style="font-family:Lato,Georgia,serif; font-size: 12px; color:#565656; padding:0px 30px 30px 30px;text-align:center;">
-                           * Si tu no solicitaste este email, puedes descartarlo.
+                           * Si tu no solicitaste este mail, puedes descartarlo.
                            </td>
                           </tr>
 
